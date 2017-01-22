@@ -47,10 +47,10 @@ int main(int argc, char** argv) {
     Types_Byte *codespace = malloc(GlobalConfig->codespacesize);
 
     
-    ByteCodeAssembler *bca = ByteCodeAssembler_Create();
+    ByteCodeAssembler *bca = ByteCodeAssembler_Create(GlobalConfig);
     bca->codespace = codespace; 
     
-    if(!ByteCodeAssembler_Assemble(bca, GlobalConfig->file)) {
+    if(!ByteCodeAssembler_Assemble(bca, "test.ant")) {
         free(codespace);
         printf("unable to assmeble file '%s'\n", GlobalConfig->file);
         

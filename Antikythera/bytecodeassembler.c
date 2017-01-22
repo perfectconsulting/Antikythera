@@ -35,14 +35,17 @@
 #include "types.h"
 
 typedef struct bytecodeassembler {
+    Configuration       *config;
+    
     Types_Byte          *codespace;
     Types_Byte          *cp;
     unsigned long       size;
 } ByteCodeAssembler;
 
-ByteCodeAssembler  *ByteCodeAssembler_Create(void){
+ByteCodeAssembler  *ByteCodeAssembler_Create(Configuration *config){
     ByteCodeAssembler *bca = malloc(sizeof(ByteCodeAssembler));
     
+    bca->config = config;
     return(bca);
 }
 

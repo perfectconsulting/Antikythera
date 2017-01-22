@@ -28,9 +28,10 @@ typedef struct bytecodeassembler {
     unsigned long       size;
 } ByteCodeAssembler;
 
-ByteCodeAssembler  *ByteCodeAssembler_Create(void);
+ByteCodeAssembler  *ByteCodeAssembler_Create(Configuration *config);
 short ByteCodeAssembler_Destroy(ByteCodeAssembler *bca);
 short ByteCodeAssembler_Assemble(ByteCodeAssembler *bca, char *file);
+void ByteCodeAssembler_CodeMemoryDump(ByteCodeAssembler *bca);
 
 #endif /* BYTECODEASSEMBLER_H */
 
