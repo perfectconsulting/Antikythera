@@ -1,6 +1,6 @@
 /*
  *
- *    types.h
+ *    heapmanager.g
  *    Version 1.00 (C99)  
  * 
  *    Copyright 2017 Steven Janes (www.perfectconsulting.co.uk)
@@ -20,23 +20,23 @@
  *
  */
 
-#ifndef TYPES_H
-#define TYPES_H
+#ifndef HEAPMANAGER_H
+#define HEAPMANAGER_H
 
-typedef unsigned char   Types_Byte;
-typedef unsigned short  Types_Word;
-typedef unsigned int    Types_DWord;
-typedef short           Types_Bool;
-typedef double           Types_Real;
+typedef struct heapmanager {
+    unsigned char       *heapbase;
+    unsigned char       *free;
+    long                size;
+    unsigned char       *firstnode;
+    unsigned char       *lastnode;
+    long                nodes;
+} HeapManager;
 
-typedef union _Types_Poly {
-    Types_Bool          Bool;
-    Types_Byte          Byte;
-    Types_Word          Word;
-    Types_DWord         DWord;
-    Types_Real          Real;
-    
-} Types_Poly;
+HeapManager *HeapManager_Create(Types_Byte *heapbase, long size);
+short HeapManager_Destroy(HeapManager *heap);
+long HeapManager_FreeSpace(HeapManager *heap);
+unsigned char *HeapManager_Allocate(HeapManager *heap, long size);
+short HeapManager_DeAllocate(HeapManager *heap, unsigned char* mem);
 
-#endif /* TYPES_H */
+#endif /* HEAPMANAGER_H */
 

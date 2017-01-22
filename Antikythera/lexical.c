@@ -141,7 +141,7 @@ short Lexical_NextToken(Lexical *lex)
     
     char *p = lex->token;
     
-    if(lex->symbol == '"'){
+    if(Lexical_HaveSymbol(lex, '"')){
         do {
              *p++ = lex->symbol;
              Next(lex);
@@ -180,7 +180,6 @@ short Lexical_NextToken(Lexical *lex)
     } while(isalnum(lex->symbol));
     
     if(lex->symbol == ':'){
-        *p++ = Next(lex);
         lex->tokentype = LABEL_TOKEN;
     }
     

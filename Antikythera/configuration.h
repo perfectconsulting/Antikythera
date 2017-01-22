@@ -29,7 +29,9 @@ typedef struct configuration {
     
     char           *file;
     
-    unsigned long   codespacesize;
+    long    codespacesize;
+    long    dataspacesize;
+    
 } Configuration;
 
 #endif /* CONFIGURATION_H */

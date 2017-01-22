@@ -25,16 +25,18 @@
 #include "constants.h"
 #include "types.h"
 #include "configuration.h"
-#include "keystore.h"
 #include "bytecodeassembler.h"
-#include "types.h"
+//#include "abstractmachineregisterset.h"
+#include "abstractmachine.h"
 
 int main(int argc, char** argv) {
     Configuration* GlobalConfig = malloc(sizeof(Configuration));
     
     GlobalConfig->debugmode = TRUE;
     GlobalConfig->silentmode = FALSE;
-    GlobalConfig->codespacesize = 1024 * 64;
+    GlobalConfig->codespacesize = 1024 * 16;
+    GlobalConfig->dataspacesize = 1024 * 64;
+    
     GlobalConfig->file = "test.ant";
 
     if(GlobalConfig->silentmode)
@@ -44,13 +46,14 @@ int main(int argc, char** argv) {
         printf("Copyright 2017 Steven Janes (www.perfectconsulting.co.uk)\n");
     }
 
-    Types_Byte *codespace = malloc(GlobalConfig->codespacesize);
-
+    Types_Byte *codespace = malloc(GlobalConfig->codespacesize + GlobalConfig->dataspacesize);
+    Types_Byte *dataspace = (Types_Byte*)codespace + GlobalConfig->codespacesize;
     
     ByteCodeAssembler *bca = ByteCodeAssembler_Create(GlobalConfig);
     bca->codespace = codespace; 
     
     if(!ByteCodeAssembler_Assemble(bca, "test.ant")) {
+        ByteCodeAssembler_Destroy(bca);
         free(codespace);
         printf("unable to assmeble file '%s'\n", GlobalConfig->file);
         
@@ -58,6 +61,14 @@ int main(int argc, char** argv) {
     }
     
     ByteCodeAssembler_CodeMemoryDump(bca);
+    
+    AbstractMachine *mac = AbstractMachine_Create(GlobalConfig);
+    mac->codespace = codespace;
+    
+    AbstractMachine_Execute(mac);
+    
+    ByteCodeAssembler_Destroy(bca);
+    AbstractMachine_Destrory(mac);
     
     free(GlobalConfig);
     return (EXIT_SUCCESS);

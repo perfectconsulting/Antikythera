@@ -23,6 +23,8 @@
 #define BYTECODEASSEMBLER_H
 
 typedef struct bytecodeassembler {
+    Configuration       *config;
+    
     Types_Byte          *codespace;
     Types_Byte          *cp;
     unsigned long       size;

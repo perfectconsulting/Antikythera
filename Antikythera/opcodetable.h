@@ -37,11 +37,11 @@ typedef struct opcode {
 static OpCode OpCodeTable[] =   
 {  
     { "noop", NO_OP, NO_OPERAND, NO_OPERAND},    
-    { "llit1", LL_INT_1, BYTE_OPERAND, NO_OPERAND},
-    { "llit4", LL_INT_4, DWORD_OPERAND, NO_OPERAND},
-    { "llitb", LL_BOOL_1, BYTE_OPERAND, NO_OPERAND},
+    { "llitb", LL_INT_1, BYTE_OPERAND, NO_OPERAND},
+    { "lliti", LL_INT_4, DWORD_OPERAND, NO_OPERAND},
     { "llitr", LL_REAL_8, REAL_OPERAND, NO_OPERAND},    
-    { "llits", LL_REAL_8, STRING_OPERAND, NO_OPERAND}, 
+    { "llits", LL_STR_1, STRING_OPERAND, NO_OPERAND}, 
+    { "finish", FINISH_OP, NO_OPERAND, NO_OPERAND},
     { "\0", 0, 0, 0}     
 }; 
 

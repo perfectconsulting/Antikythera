@@ -42,6 +42,18 @@ typedef struct bytecodeassembler {
     unsigned long       size;
 } ByteCodeAssembler;
 
+
+static void Console(char *text)
+{
+    printf("%s", text);
+}
+
+static void Error(char *error)
+{
+    Console(error);
+    Console("\n");
+}
+
 ByteCodeAssembler  *ByteCodeAssembler_Create(Configuration *config){
     ByteCodeAssembler *bca = malloc(sizeof(ByteCodeAssembler));
     
@@ -164,11 +176,6 @@ static short AssemblePoly(ByteCodeAssembler *bca, Operand op, char *value)
     }
 }
 
-static void Error(char *error)
-{
-    printf("%s\n", error);
-}
-
 short ByteCodeAssembler_Assemble(ByteCodeAssembler *bca, char *file)
 {
     char pad[128];
@@ -205,9 +212,11 @@ short ByteCodeAssembler_Assemble(ByteCodeAssembler *bca, char *file)
                 break;                
             }
             
+            sprintf(pad, "%p %s", bca->cp, op->mnemonic);
+            Console(pad);
+            
             AssembleByte(bca, op->opcode);
      
-            
             if(op->operand1 != NO_OPERAND) {
                 if(!Lexical_HaveSymbol(lex, '(')){
                     sprintf(pad, "error on line %d, expected '(' found '%c'", lex->line, lex->symbol);
@@ -224,6 +233,8 @@ short ByteCodeAssembler_Assemble(ByteCodeAssembler *bca, char *file)
                 }
                 
                 AssemblePoly(bca, op->operand1, lex->token);
+                sprintf(pad, "(%s", lex->token);
+                Console(pad);
                 
                 if(Lexical_HaveSymbol(lex, ',')) {
                     if(!Lexical_NextToken(lex)){
@@ -232,6 +243,9 @@ short ByteCodeAssembler_Assemble(ByteCodeAssembler *bca, char *file)
                         error = TRUE;
                         break;                                                        
                     }
+
+                    AssemblePoly(bca, op->operand1, lex->token);
+                    sprintf(pad, ",%s", lex->token);
                     
                     AssemblePoly(bca, op->operand2, lex->token);
                 }
@@ -240,11 +254,16 @@ short ByteCodeAssembler_Assemble(ByteCodeAssembler *bca, char *file)
                     printf("error on line %d, expected '()' found '%c'", lex->line, lex->symbol);
                     error = TRUE;
                     break;                                    
-                }                
+                }             
+                
+                Console(")");
             }
+            
+            Console("\n");
         }
     }
     
+    Lexical_Destroy(lex);
     return(!error);
 }
 

@@ -1,6 +1,6 @@
 /*
  *
- *    types.h
+ *    abstractmachine.c
  *    Version 1.00 (C99)  
  * 
  *    Copyright 2017 Steven Janes (www.perfectconsulting.co.uk)
@@ -20,23 +20,23 @@
  *
  */
 
-#ifndef TYPES_H
-#define TYPES_H
 
-typedef unsigned char   Types_Byte;
-typedef unsigned short  Types_Word;
-typedef unsigned int    Types_DWord;
-typedef short           Types_Bool;
-typedef double           Types_Real;
+#ifndef ABSTRACTMACHINE_H
+#define ABSTRACTMACHINE_H
 
-typedef union _Types_Poly {
-    Types_Bool          Bool;
-    Types_Byte          Byte;
-    Types_Word          Word;
-    Types_DWord         DWord;
-    Types_Real          Real;
+#include "types.h"
+
+
+typedef struct abstractmachine {
+    Configuration       *config;
     
-} Types_Poly;
+    Types_Byte          *codespace;
+    Types_Byte          *dataspace;
+    
+} AbstractMachine;
 
-#endif /* TYPES_H */
+AbstractMachine *AbstractMachine_Create(Configuration *config);
+short AbstractMachine_Destrory(AbstractMachine *mac);
+short AbstractMachine_Execute(AbstractMachine *mac);
+#endif /* ABSTRACTMACHINE_H */
 
